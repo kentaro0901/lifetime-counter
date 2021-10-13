@@ -74,22 +74,39 @@ class _ChangeFormState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Center(
-                child:Text("$_dateStringまであと")
+                child:Text(
+                  "$_dateStringまであと",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.black,
+                  ),
+                )
             ),
             Center(
                 child:Text(
                   "$_duration",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontSize: 30,
                     color: Theme.of(context).primaryColor,
                   ),
                 )
             ),
-            ElevatedButton(
+            Container(
+              padding: const EdgeInsets.only(top:100.0),
+              child: ElevatedButton(
                 onPressed: () => _selectDate(context),
-                child: const Text('日付選択'),
-            )
+                child: Text(
+                  '命日選択',
+                  style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                    fontSize: 20,
+                    color: Theme.of(context).secondaryHeaderColor,
+                  ),
+                ),
+              )
+            ),
           ],
         ),
       ),
