@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MyApp());
@@ -39,6 +40,16 @@ class _ChangeFormState extends State<MyHomePage> {
   void initState() {
     super.initState();
     Timer.periodic(const Duration(milliseconds: 50), _onTimer);
+    _getPrefItems();
+  }
+
+  _getPrefItems() async { // ロード
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int timestamp = prefs.getInt('dateTimestamp') ?? DateTime.now().millisecondsSinceEpoch;
+    setState(() {
+      _date = DateTime.fromMillisecondsSinceEpoch(timestamp);
+      _dateString = DateFormat('yyyy-MM-dd').format(_date);
+    });
   }
 
   void _onTimer(Timer timer) {
@@ -49,6 +60,7 @@ class _ChangeFormState extends State<MyHomePage> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: _date,
@@ -61,6 +73,7 @@ class _ChangeFormState extends State<MyHomePage> {
         _dateString = DateFormat('yyyy-MM-dd').format(picked),
       });
     }
+    prefs.setInt('dateTimestamp', picked!.millisecondsSinceEpoch); // セーブ
   }
 
   @override
